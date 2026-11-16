@@ -1,6 +1,6 @@
 ---
 name: implement
-description: "Take a ticket, spec, or agreed change to a proven, reviewed PR that is ready to merge, then stop. Use when the user asks to implement, build, or fix a ticket or spec, or says 'full stop'. Say 'full send' to also merge it unattended."
+description: "Take a ticket, spec, or agreed change to a proven, reviewed PR that is ready to merge, then stop. Use when the user asks to implement, build, or fix a ticket or spec, or says 'full stop' (even as a closing \"Full stop.\" that reads like emphasis). Also use when the user says 'full send': then merge it unattended once the gate passes."
 ---
 
 # Implement
