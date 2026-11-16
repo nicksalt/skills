@@ -10,7 +10,7 @@ Start with [`docs/flows.md`](docs/flows.md) for how they chain, or run `/ask-nic
 
 | Area | Skill | What it does |
 |---|---|---|
-| Think | `/grilling` | Interview a plan a round at a time; records glossary terms and ADRs as they settle |
+| Think | `grilling` | Interview a plan a round at a time; records glossary terms and ADRs as they settle |
 | | `domain-modeling` | Build `GLOSSARY.md` and ADRs |
 | | `codebase-design` | Deep-module vocabulary, plus Architect (sketch types first) and Scan (find deepening opportunities) modes |
 | | `explain` | How code works (How mode) or why it's that way (Why mode) |

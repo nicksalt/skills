@@ -12,7 +12,7 @@ A **flow** is a path through the skills. Most work travels the **main flow**; th
 
 ## The main flow: idea → ready-to-merge PR
 
-1. **`/grilling`** sharpens the idea by interview, a round of numbered questions at a time. In a repo it also runs **`domain-modeling`**, so settled terms land in `GLOSSARY.md` and hard decisions become ADRs.
+1. **`grilling`** sharpens the idea by interview, a round of numbered questions at a time. In a repo it also runs **`domain-modeling`**, so settled terms land in `GLOSSARY.md` and hard decisions become ADRs.
    - A question that needs a runnable answer (a state model, business logic, a UI you have to see)? Detour through **`/prototype`**, with **`/handoff`** out and back if it lives in another directory.
    - Not sure the task is deep enough? **`/sharpen`** rewrites the prompt first.
 2. **`spec`** writes the settled conversation up as **one ticket** that owns the outcome, with the implementation plan inside it. It splits into several tickets only for independent outcomes, or when you ask.
@@ -35,7 +35,7 @@ Keep steps 1 and 2 in one context window so the spec builds on the grilling. `im
 - **`codebase-design`**: the deep-module vocabulary, plus Architect mode (sketch types and signatures before code) and Scan mode (find deepening opportunities across the codebase).
 - **`explain`**: How mode (what the code does now) and Why mode (what the record says about why).
 - **`blast-radius`**: what a change breaks somewhere else, proven by running code.
-- **`/research`**: primary-source research into a Markdown file. **`/teach`** when you want to learn the concept yourself.
+- **`research`**: primary-source research into a Markdown file. **`/teach`** when you want to learn the concept yourself.
 
 ## Proof
 

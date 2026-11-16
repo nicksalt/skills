@@ -6,7 +6,7 @@ How the skills chain. Solid arrows are a skill calling another; dotted arrows ar
 
 ```mermaid
 flowchart LR
-  idea([Idea]) --> grill["/grilling"]
+  idea([Idea]) --> grill[grilling]
   grill -.->|in a repo| dm[domain-modeling]
   grill -.->|needs a runnable answer| proto[prototype]
   grill -.->|task feels shallow| sharpen["/sharpen"]
@@ -66,10 +66,10 @@ flowchart LR
   explain -->|Why mode| why[what the record says]
   design([Designing a module]) --> cd[codebase-design]
   cd -->|Architect mode| sketch[types and signatures first]
-  cd -->|Scan mode| scan[HTML report of deepening candidates] --> grill["/grilling"]
+  cd -->|Scan mode| scan[HTML report of deepening candidates] --> grill[grilling]
   change([A risky diff]) --> blast[blast-radius]
   learn([I want to understand it]) --> teach["/teach"]
-  facts([Need primary sources]) --> research["/research"]
+  facts([Need primary sources]) --> research[research]
   newrepo([New repo]) --> setup["/setup"] --> docs[(docs/agents/*.md)]
   newrepo --> vcreate[verification: create] --> vskill["verify-&lt;app&gt; skill"]
   vskill -.->|app changed| vmaint[verification: maintain]
