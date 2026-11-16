@@ -1,0 +1,340 @@
+{
+  "$comment": "Where each skill came from and the upstream commit it was last synced to. scripts/upstream-diff.py reads this; bump `synced` after you review a digest.",
+  "sources": {
+    "matt": {
+      "repo": "mattpocock/skills",
+      "branch": "main",
+      "synced": "5863806dd4e15c63174bee4e7515a4256792ecfa",
+      "release": "v1.3.2",
+      "watch": [
+        "skills/engineering",
+        "skills/productivity",
+        "skills/misc",
+        "skills/in-progress"
+      ]
+    },
+    "tstack": {
+      "repo": "t3dotgg/tstack",
+      "branch": "main",
+      "synced": "11e37a74d0a6868c121cd0910ab2b3bd9873b92a",
+      "watch": [
+        "skills"
+      ]
+    },
+    "pstack": {
+      "repo": "cursor/plugins",
+      "branch": "main",
+      "synced": "bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7",
+      "watch": [
+        "pstack/skills",
+        "pstack/agents"
+      ]
+    },
+    "t3code": {
+      "repo": "pingdotgg/t3code",
+      "branch": "main",
+      "synced": "6f5838f9bcdaf31864b93694c5935c93f9532e06",
+      "watch": [
+        ".agents/skills"
+      ]
+    }
+  },
+  "skills": {
+    "ask-nick": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/ask-matt"
+      }
+    ],
+    "babysit-pr": [
+      {
+        "source": "tstack",
+        "path": "skills/babysit-pr"
+      }
+    ],
+    "blast-radius": [
+      {
+        "source": "pstack",
+        "path": "pstack/skills/blast-radius"
+      }
+    ],
+    "code-review": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/code-review"
+      }
+    ],
+    "codebase-design": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/codebase-design"
+      },
+      {
+        "source": "matt",
+        "path": "skills/engineering/improve-codebase-architecture"
+      },
+      {
+        "source": "pstack",
+        "path": "pstack/skills/architect"
+      }
+    ],
+    "correct": [
+      {
+        "source": "pstack",
+        "path": "pstack/skills/correct"
+      }
+    ],
+    "council": [
+      {
+        "source": "tstack",
+        "path": "skills/council"
+      }
+    ],
+    "diagnose": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/diagnosing-bugs"
+      }
+    ],
+    "domain-modeling": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/domain-modeling"
+      }
+    ],
+    "explain": [
+      {
+        "source": "pstack",
+        "path": "pstack/skills/how"
+      },
+      {
+        "source": "pstack",
+        "path": "pstack/skills/why"
+      }
+    ],
+    "figure-it-out": [
+      {
+        "source": "pstack",
+        "path": "pstack/skills/figure-it-out"
+      }
+    ],
+    "grilling": [
+      {
+        "source": "matt",
+        "path": "skills/productivity/grilling"
+      },
+      {
+        "source": "matt",
+        "path": "skills/engineering/grill-with-docs"
+      }
+    ],
+    "handoff": [
+      {
+        "source": "matt",
+        "path": "skills/productivity/handoff"
+      }
+    ],
+    "implement": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/implement"
+      },
+      {
+        "source": "matt",
+        "path": "skills/engineering/implement-spec"
+      },
+      {
+        "source": "tstack",
+        "path": "skills/full-stop"
+      },
+      {
+        "source": "tstack",
+        "path": "skills/full-send"
+      }
+    ],
+    "pr": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/pr"
+      },
+      {
+        "source": "tstack",
+        "path": "skills/file-pr"
+      },
+      {
+        "source": "tstack",
+        "path": "skills/leaving-pr-comments"
+      }
+    ],
+    "prototype": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/prototype"
+      }
+    ],
+    "research": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/research"
+      }
+    ],
+    "retro": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/retro"
+      }
+    ],
+    "setup": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/setup-matt-pocock-skills"
+      }
+    ],
+    "sharpen": [
+      {
+        "source": "pstack",
+        "path": "pstack/skills/sharpen"
+      }
+    ],
+    "spec": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/to-spec"
+      },
+      {
+        "source": "matt",
+        "path": "skills/engineering/to-tickets"
+      }
+    ],
+    "takeover": [
+      {
+        "source": "tstack",
+        "path": "skills/takeover"
+      },
+      {
+        "source": "tstack",
+        "path": "skills/modernize"
+      }
+    ],
+    "tdd": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/tdd"
+      }
+    ],
+    "teach": [
+      {
+        "source": "matt",
+        "path": "skills/productivity/teach"
+      }
+    ],
+    "to-questionnaire": [
+      {
+        "source": "matt",
+        "path": "skills/productivity/to-questionnaire"
+      }
+    ],
+    "triage": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/triage"
+      }
+    ],
+    "unslop": [
+      {
+        "source": "pstack",
+        "path": "pstack/skills/unslop"
+      }
+    ],
+    "verification": [
+      {
+        "source": "pstack",
+        "path": "pstack/skills/create-verification-skill"
+      },
+      {
+        "source": "pstack",
+        "path": "pstack/skills/maintain-verification-skill"
+      }
+    ],
+    "wait-what": [
+      {
+        "source": "matt",
+        "path": "skills/productivity/wait-what"
+      }
+    ],
+    "wayfinder": [
+      {
+        "source": "matt",
+        "path": "skills/engineering/wayfinder"
+      }
+    ],
+    "workhorse": [],
+    "writing-for-agents": [
+      {
+        "source": "matt",
+        "path": "skills/productivity/writing-for-agents"
+      }
+    ],
+    "trial/ketchup": [
+      {
+        "source": "pstack",
+        "path": "pstack/skills/ketchup"
+      }
+    ],
+    "trial/automate-me": [
+      {
+        "source": "pstack",
+        "path": "pstack/skills/automate-me"
+      }
+    ],
+    "trial/benchmark-checklist": [
+      {
+        "source": "pstack",
+        "path": "pstack/skills/benchmark-checklist"
+      }
+    ],
+    "trial/no-comments": [
+      {
+        "source": "pstack",
+        "path": "pstack/skills/no-comments"
+      },
+      {
+        "source": "pstack",
+        "path": "pstack/agents/comment-sicko.md"
+      }
+    ]
+  },
+  "declined": {
+    "$comment": "Upstream skills deliberately left out. The digest lists their changes in one line instead of a full review.",
+    "matt": [
+      "grill-me",
+      "wizard"
+    ],
+    "pstack": [
+      "arena",
+      "swarm",
+      "interrogate",
+      "recall",
+      "reflect",
+      "show-me-your-work",
+      "bro",
+      "teach",
+      "tdd",
+      "technical-writing",
+      "in-your-own-words",
+      "poteto-mode",
+      "poteto-help",
+      "setup-pstack",
+      "statechart",
+      "create-formal-verification-skill",
+      "maintain-formal-verification-skill",
+      "make-bot-ui",
+      "typescript-best-practices",
+      "ketchup-video",
+      "principle-*"
+    ],
+    "tstack": [
+      "sol-loop"
+    ]
+  }
+}

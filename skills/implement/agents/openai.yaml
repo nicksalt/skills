@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement"
+  short_description: "Build, prove, review and file a PR that is ready to merge"
+  default_prompt: "Use $implement on this ticket. Full stop: leave the PR ready for me to merge."

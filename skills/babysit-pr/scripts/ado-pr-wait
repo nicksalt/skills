@@ -1,0 +1,198 @@
+#!/usr/bin/env python3
+"""ado-pr-wait: watch one Azure DevOps pull request and print one line per real event.
+
+  ado-pr-wait <pr-id> [--org URL] [--project NAME] [--until ready|green|any-change] [--interval 60]
+
+Reads with the Azure CLI (`az repos pr`, `az devops invoke`), so `az login` and the
+azure-devops extension must already work. --org/--project default to `az devops
+configure` defaults, or are detected from the current checkout's remote.
+
+--until
+  green       every blocking check (builds, work-item linking, comment rules) approved
+              on the current head; reviewer-count policies are not checks
+  ready       green, no active (unresolved) comment threads, and no reviewer voting
+              "waiting for author" or "rejected" (default). Exits 0 with "ready except
+              required human approval" when only reviewer approval remains
+  any-change  stop after the first poll that prints an event
+
+Exit codes
+  0  the --until condition is met, or the PR completed
+  1  needs you: a blocking policy was rejected, merge conflicts, the PR was
+     abandoned, a reviewer rejected or is waiting for the author, or ADO stayed
+     unreachable
+  2  bad arguments, or the PR could not be read
+
+Events: a policy changed state; a new thread or reply from someone other than the
+author; a reviewer vote changed; merge status changed; the PR completed or was
+abandoned. Stdout carries only events, so a monitor wakes the agent once per event.
+"""
+import argparse
+import json
+import re
+import subprocess
+import sys
+import time
+
+VOTES = {10: "approved", 5: "approved with suggestions", 0: "no vote", -5: "waiting for author", -10: "rejected"}
+
+
+def az(args):
+    out = subprocess.run(["az", *args, "-o", "json"], capture_output=True, text=True)
+    if out.returncode != 0:
+        raise RuntimeError(out.stderr.strip().splitlines()[-1] if out.stderr.strip() else "az failed")
+    return json.loads(out.stdout or "null")
+
+
+def detect_org_project():
+    try:
+        url = subprocess.run(["git", "remote", "get-url", "origin"], capture_output=True, text=True).stdout.strip()
+    except OSError:
+        return None, None
+    m = re.match(r"https://(?:[^@/]+@)?dev\.azure\.com/([^/]+)/([^/]+)/_git/", url)
+    if m:
+        return f"https://dev.azure.com/{m.group(1)}", m.group(2)
+    m = re.match(r"https://([^.]+)\.visualstudio\.com/(?:DefaultCollection/)?([^/]+)/_git/", url)
+    if m:
+        return f"https://dev.azure.com/{m.group(1)}", m.group(2)
+    return None, None
+
+
+def snapshot(pr_id, org, project):
+    scope = (["--org", org] if org else [])
+    pr = az(["repos", "pr", "show", "--id", str(pr_id), *scope])
+    policies = az(["repos", "pr", "policy", "list", "--id", str(pr_id), *scope])
+    proj = project or pr["repository"]["project"]["name"]
+    threads = az([
+        "devops", "invoke", "--area", "git", "--resource", "pullRequestThreads",
+        "--route-parameters", f"project={proj}", f"repositoryId={pr['repository']['id']}",
+        f"pullRequestId={pr_id}", "--api-version", "7.1", *scope,
+    ]).get("value", [])
+    return pr, policies, threads
+
+
+def summarize(pr, policies, threads):
+    author = pr["createdBy"]["id"]
+    pol = {}
+    for p in policies:
+        cfg = p.get("configuration", {})
+        name = ((cfg.get("settings") or {}).get("displayName")
+                or (p.get("context") or {}).get("buildDefinitionName")
+                or cfg.get("type", {}).get("displayName", "policy"))
+        kind = cfg.get("type", {}).get("displayName", "")
+        pol[f"{name}#{cfg.get('id')}"] = (p.get("status"), bool(cfg.get("isBlocking")), "reviewer" in kind.lower())
+    comments = {}
+    active = 0
+    for t in threads:
+        if t.get("isDeleted"):
+            continue
+        human = [c for c in t.get("comments", []) if c.get("commentType") == "text" and not c.get("isDeleted")]
+        if not human:
+            continue
+        if t.get("status") == "active":
+            active += 1
+        for c in human:
+            if c["author"]["id"] != author:
+                comments[f"{t['id']}/{c['id']}"] = f"{c['author']['displayName']}: {c.get('content', '')[:120]!r}"
+    votes = {r["displayName"]: r.get("vote", 0) for r in pr.get("reviewers", [])}
+    return {
+        "status": pr["status"],
+        "merge": pr.get("mergeStatus"),
+        "head": pr.get("lastMergeSourceCommit", {}).get("commitId", "")[:10],
+        "policies": pol,
+        "comments": comments,
+        "active_threads": active,
+        "votes": votes,
+    }
+
+
+def diff(prev, cur):
+    ev = []
+    if prev is None:
+        return ev
+    if cur["head"] != prev["head"]:
+        ev.append(f"new head {cur['head']}")
+    for k, (st, blocking, _) in cur["policies"].items():
+        if prev["policies"].get(k, (None,))[0] != st:
+            ev.append(f"policy {k.split('#')[0]!r} -> {st}{' (blocking)' if blocking else ''}")
+    for k, v in cur["comments"].items():
+        if k not in prev["comments"]:
+            ev.append(f"comment {v}")
+    for who, v in cur["votes"].items():
+        if prev["votes"].get(who) != v:
+            ev.append(f"vote {who}: {VOTES.get(v, v)}")
+    if cur["merge"] != prev["merge"]:
+        ev.append(f"merge status -> {cur['merge']}")
+    if cur["status"] != prev["status"]:
+        ev.append(f"PR {cur['status']}")
+    return ev
+
+
+def verdict(s, until):
+    if s["status"] == "completed":
+        return 0, "PR completed"
+    if s["status"] == "abandoned":
+        return 1, "PR abandoned"
+    if s["merge"] == "conflicts":
+        return 1, "merge conflicts"
+    blocking = [(st, rev) for st, b, rev in s["policies"].values() if b]
+    if any(st == "rejected" and not rev for st, rev in blocking):
+        return 1, "a blocking policy was rejected"
+    checks_green = all(st == "approved" for st, rev in blocking if not rev)
+    approvals_done = all(st == "approved" for st, rev in blocking if rev)
+    if until == "green":
+        return (0, "blocking checks approved") if checks_green else (None, "")
+    if until == "ready":
+        if any(v in (-5, -10) for v in s["votes"].values()):
+            return 1, "a reviewer is waiting for the author or rejected"
+        if checks_green and s["active_threads"] == 0:
+            if approvals_done:
+                return 0, "ready: blocking policies approved, no active threads"
+            return 0, "ready except required human approval"
+    return None, ""
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("pr", type=int)
+    ap.add_argument("--org")
+    ap.add_argument("--project")
+    ap.add_argument("--until", choices=["ready", "green", "any-change"], default="ready")
+    ap.add_argument("--interval", type=int, default=60)
+    a = ap.parse_args()
+    org, project = a.org, a.project
+    if not org:
+        org, detected = detect_org_project()
+        project = project or detected
+    prev, failures = None, 0
+    while True:
+        try:
+            cur = summarize(*snapshot(a.pr, org, project))
+            failures = 0
+        except (RuntimeError, KeyError, json.JSONDecodeError) as e:
+            if prev is None:
+                print(f"cannot read PR {a.pr}: {e}", file=sys.stderr)
+                return 2
+            failures += 1
+            print(f"read failed ({failures}): {e}", file=sys.stderr)
+            if failures >= 5:
+                print("ADO unreachable after 5 tries")
+                return 1
+            time.sleep(a.interval)
+            continue
+        events = diff(prev, cur)
+        for e in events:
+            print(e, flush=True)
+        code, why = verdict(cur, a.until)
+        if code is not None:
+            print(why, flush=True)
+            return code
+        if a.until == "any-change" and events:
+            return 0
+        if prev is None:
+            print(f"watching PR {a.pr} at {cur['head']} (status {cur['status']}, merge {cur['merge']})", file=sys.stderr)
+        prev = cur
+        time.sleep(a.interval)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

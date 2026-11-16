@@ -1,0 +1,5 @@
+interface:
+  display_name: "Handoff"
+  short_description: "Write a handoff, or resume a thread or handoff here"
+policy:
+  allow_implicit_invocation: false
