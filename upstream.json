@@ -4,7 +4,7 @@
     "matt": {
       "repo": "mattpocock/skills",
       "branch": "main",
-      "synced": "5863806dd4e15c63174bee4e7515a4256792ecfa",
+      "synced": "abeeaf95660ba9e8b7c753eb38f441ca707a8823",
       "release": "v1.3.2",
       "watch": [
         "skills/engineering",
@@ -24,7 +24,7 @@
     "pstack": {
       "repo": "cursor/plugins",
       "branch": "main",
-      "synced": "bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7",
+      "synced": "7a583913eb1b8d1a0ee76753d1a2cf072e7b54f9",
       "watch": [
         "pstack/skills",
         "pstack/agents"
@@ -33,7 +33,7 @@
     "t3code": {
       "repo": "pingdotgg/t3code",
       "branch": "main",
-      "synced": "6f5838f9bcdaf31864b93694c5935c93f9532e06",
+      "synced": "c6fe23dd2871126cd189cf197761849e7ef0f91d",
       "watch": [
         ".agents/skills"
       ]
