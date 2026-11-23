@@ -287,12 +287,6 @@
         "path": "pstack/skills/automate-me"
       }
     ],
-    "trial/benchmark-checklist": [
-      {
-        "source": "pstack",
-        "path": "pstack/skills/benchmark-checklist"
-      }
-    ],
     "trial/no-comments": [
       {
         "source": "pstack",
@@ -331,7 +325,8 @@
       "make-bot-ui",
       "typescript-best-practices",
       "ketchup-video",
-      "principle-*"
+      "principle-*",
+      "benchmark-checklist"
     ],
     "tstack": [
       "sol-loop"
