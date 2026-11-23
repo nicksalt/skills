@@ -20,7 +20,8 @@ DRY=0
 [[ "${1:-}" == "--dry-run" ]] && DRY=1
 
 RETIRED=(grill-me grill-with-docs to-spec to-tickets implement-spec improve-codebase-architecture
-         diagnosing-bugs ask-matt setup-matt-pocock-skills t3-resume wizard)
+         diagnosing-bugs ask-matt setup-matt-pocock-skills t3-resume wizard
+         benchmark-checklist)
 
 run() { if (( DRY )); then echo "would: $*"; else "$@"; fi; }
 

@@ -28,7 +28,7 @@ Start with [`docs/flows.md`](docs/flows.md) for how they chain, or run `/ask-nic
 | Context | `/handoff`, `/wait-what`, `/retro` | Write or resume a handoff; re-pitch; learn from a session |
 | Meta | `writing-for-agents`, `/unslop`, `/setup`, `/ask-nick` | Write skills; cut AI tells; configure a repo; find the right skill |
 
-`trial/` holds skills on probation: `ketchup`, `automate-me`, `benchmark-checklist`, `no-comments`.
+`trial/` holds skills on probation: `ketchup`, `automate-me`, `no-comments`.
 
 ## Install
 

@@ -52,6 +52,6 @@ Keep steps 1 and 2 in one context window so the spec builds on the grilling. `im
 
 ## Trials
 
-Skills in the repo's `trial/` folder are on probation: `ketchup`, `automate-me`, `benchmark-checklist`, `no-comments`. Suggest one only when it clearly fits, and say it's a trial.
+Skills in the repo's `trial/` folder are on probation: `ketchup`, `automate-me`, `no-comments`. Suggest one only when it clearly fits, and say it's a trial.
 
 The visual version of this map is `docs/flows.md` in the skills repo.
